@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meus Tickets - Sistema de Tickets de Internet</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script type="module" src="../js/api.js"></script>
+    <script type="module" src="../js/auth-service.js"></script>
+    <script type="module" src="../js/ticket-service.js"></script>
+    <script type="module" src="../js/auth.js"></script>
+    <script type="module" src="../js/my-tickets.js"></script>
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Finternett4536back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Header -->
+    <header class="bg-surface shadow-elevation-1 border-b border-secondary-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo and Navigation -->
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-primary text-white rounded-lg p-2">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <h1 class="text-xl font-semibold text-text-primary">Sistema de Tickets</h1>
+                    </div>
+                    
+                    <!-- Desktop Navigation -->
+                    <nav class="hidden md:flex space-x-6">
+                        <a href="customer_dashboard.html" class="text-text-secondary hover:text-primary transition-colors">
+                            Dashboard
+                        </a>
+                        <a href="my_tickets.html" class="text-primary font-medium">
+                            Meus Tickets
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notifications -->
+                    <button class="relative p-2 text-text-secondary hover:text-primary transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-6h5v6z"/>
+                        </svg>
+                        <span class="absolute -top-1 -right-1 bg-error text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+
+                    <!-- User Profile -->
+                    <div class="relative">
+                        <button id="userMenuButton" class="flex items-center space-x-2 text-text-secondary hover:text-primary transition-colors">
+                            <img src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Perfil do usuário" class="w-8 h-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                            <span class="hidden sm:block font-medium">João Silva</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-surface rounded-lg shadow-elevation-3 border border-secondary-200 z-50">
+                            <div class="py-1">
+                                <a href="customer_dashboard.html" class="block px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-primary transition-colors">
+                                    Dashboard
+                                </a>
+                                <a href="javascript:void(0)" class="block px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-primary transition-colors">
+                                    Perfil
+                                </a>
+                                <a href="javascript:void(0)" class="block px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-primary transition-colors">
+                                    Configurações
+                                </a>
+                                <hr class="my-1 border-secondary-200" />
+                                <a href="user_login.html" class="block px-4 py-2 text-sm text-error-600 hover:bg-error-50 transition-colors">
+                                    Sair
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuButton" class="md:hidden p-2 text-text-secondary hover:text-primary transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div id="mobileMenu" class="hidden md:hidden border-t border-secondary-200 bg-surface">
+            <div class="px-4 py-3 space-y-2">
+                <a href="customer_dashboard.html" class="block py-2 text-text-secondary hover:text-primary transition-colors">
+                    Dashboard
+                </a>
+                <a href="my_tickets.html" class="block py-2 text-primary font-medium">
+                    Meus Tickets
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center space-x-2 text-sm text-text-secondary mb-6">
+            <a href="customer_dashboard.html" class="hover:text-primary transition-colors">Dashboard</a>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+            <span class="text-text-primary font-medium">Meus Tickets</span>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-semibold text-text-primary mb-2">Meus Tickets</h1>
+                <p class="text-text-secondary">Gerencie todos os seus tickets de suporte</p>
+            </div>
+            <div class="mt-4 sm:mt-0">
+                <a href="create_ticket.html" class="btn-primary inline-flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    <span>Novo Ticket</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="bg-surface rounded-lg shadow-elevation-1 border border-secondary-200 p-4 mb-6">
+            <!-- Search Bar -->
+            <div class="relative mb-4">
+                <input type="text" id="searchInput" placeholder="Buscar por número do ticket, descrição ou status..." class="input-field pl-10 pr-4" />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                <button id="clearSearch" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-secondary-400 hover:text-secondary-600">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Filter Chips -->
+            <div class="flex flex-wrap gap-2 mb-4">
+                <button class="filter-chip active" data-filter="all">
+                    Todos <span class="ml-1 bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded-full text-xs">12</span>
+                </button>
+                <button class="filter-chip" data-filter="open">
+                    Abertos <span class="ml-1 bg-error-100 text-error-700 px-1.5 py-0.5 rounded-full text-xs">4</span>
+                </button>
+                <button class="filter-chip" data-filter="in-progress">
+                    Em Andamento <span class="ml-1 bg-warning-100 text-warning-700 px-1.5 py-0.5 rounded-full text-xs">3</span>
+                </button>
+                <button class="filter-chip" data-filter="closed">
+                    Fechados <span class="ml-1 bg-success-100 text-success-700 px-1.5 py-0.5 rounded-full text-xs">5</span>
+                </button>
+            </div>
+
+            <!-- Advanced Filters -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="flex flex-wrap gap-3">
+                    <!-- Priority Filter -->
+                    <select id="priorityFilter" class="input-field w-auto min-w-32">
+                        <option value>Prioridade</option>
+                        <option value="high">Alta</option>
+                        <option value="medium">Média</option>
+                        <option value="low">Baixa</option>
+                    </select>
+
+                    <!-- Date Range Filter -->
+                    <select id="dateFilter" class="input-field w-auto min-w-36">
+                        <option value>Período</option>
+                        <option value="today">Hoje</option>
+                        <option value="week">Esta semana</option>
+                        <option value="month">Este mês</option>
+                        <option value="custom">Personalizado</option>
+                    </select>
+
+                    <!-- Sort Options -->
+                    <select id="sortFilter" class="input-field w-auto min-w-36">
+                        <option value="newest">Mais recentes</option>
+                        <option value="oldest">Mais antigos</option>
+                        <option value="priority">Por prioridade</option>
+                        <option value="status">Por status</option>
+                    </select>
+                </div>
+
+                <!-- Results Count and Export -->
+                <div class="flex items-center space-x-4">
+                    <span id="resultsCount" class="text-sm text-text-secondary">12 tickets encontrados</span>
+                    <button id="exportButton" class="text-sm text-primary hover:text-primary-700 font-medium transition-colors">
+                        Exportar PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tickets List -->
+        <div id="ticketsList" class="space-y-4">
+            <!-- Ticket Card 1 -->
+            <div class="ticket-card bg-surface rounded-lg shadow-elevation-1 border border-secondary-200 p-4 hover:shadow-elevation-2 transition-all cursor-pointer" data-ticket-id="TK-2025-001">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-error-50 text-error-600 rounded-lg p-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-text-primary">#TK-2025-001</h3>
+                            <p class="text-sm text-text-secondary">Conexão intermitente</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="status-badge status-error">Aberto</span>
+                        <button class="text-secondary-400 hover:text-secondary-600 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+                    <div>
+                        <span class="text-text-secondary">Prioridade:</span>
+                        <p class="font-medium text-error-600">Alta</p>
+                    </div>
+                    <div>
+                        <span class="text-text-secondary">Criado em:</span>
+                        <p class="font-medium text-text-primary">28/08/2025</p>
+                    </div>
+                    <div>
+                        <span class="text-text-secondary">Última atualização:</span>
+                        <p class="font-medium text-text-primary">28/08/2025 14:30</p>
+                    </div>
+                    <div>
+                        <span class="text-text-secondary">Agente:</span>
+                        <p class="font-medium text-text-primary">Maria Santos</p>
+                    </div>
+                </div>
+
+                <div class="mt-3 pt-3 border-t border-secondary-200">
+                    <p class="text-sm text-text-secondary line-clamp-2">
+                        Internet caindo constantemente durante o dia. Velocidade muito abaixo do contratado. Já reiniciei o modem várias vezes.
+                    </p>
+                </div>
+
+                <div class="mt-3 flex items-center justify-between">
+                    <div class="flex items-center space-x-2 text-xs text-text-secondary">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>SLA: 2h restantes</span>
+                    </div>
+                    <a href="ticket_details.html" class="text-primary hover:text-primary-700 text-sm font-medium transition-colors">
+                        Ver detalhes →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Ticket Card 2 -->
+            <div class="ticket-card bg-surface rounded-lg shadow-elevation-1 border border-secondary-200 p-4 hover:shadow-elevation-2 transition-all cursor-pointer" data-ticket-id="TK-2025-002">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-warning-50 text-warning-600 rounded-lg p-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-text-primary">#TK-2025-002</h3>
+                            <p class="text-sm text-text-secondary">Velocidade baixa</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="status-badge status-warning">Em Andamento</span>
+                        <button class="text-secondary-400 hover:text-secondary-600 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+                    <div>
+                        <span class="text-text-secondary">Prioridade:</span>
+                        <p class="font-medium text-warning-600">Média</p>
+                    </div>
+                    <div>
+                        <span class="text-text-secondary">Criado em:</span>
+                        <p class="font-medium text-text-primary">27/08/2025</p>
+                    </div>
+                    <div>
+                        <span class="text-text-secondary">Última atualização:</span>
+                        <p class="font-medium text-text-primary">28/08/2025 10:15</p>
+                    </div>
+                    <div>
+                        <span class="text-text-secondary">Agente:</span>
+                        <p class="font-medium text-text-primary">Carlos Lima</p>
+                    </div>
+                </div>
+
+                <div class="mt-3 pt-3 border-t border-secondary-200">
+                    <p class="text-sm text-text-secondary line-clamp-2">
+                        Velocidade de download está em 20Mbps quando deveria ser 100Mbps. Upload normal.
+                    </p>
+                </div>
+
+                <div class="mt-3 flex items-center justify-between">
+                    <div class="flex items-center space-x-2 text-xs text-text-secondary">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Técnico agendado</span>
+                    </div>
+                    <a href="ticket_details.html" class="text-primary hover:text-primary-700 text-sm font-medium transition-colors">
+                        Ver detalhes →
+                    </a>
+                </div>
+            </div>
+
+            <!-- Ticket Card 3 -->
+            <div class="ticket-card bg-surface rounded-lg shadow-elevation-1 border border-secondary-200 p-4 hover:shadow-elevation-2 transition-all cursor-pointer" data-ticket-id="TK-2025-003">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-success-50 text-success-600 rounded-lg p-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-text-primary">#TK-2025-003</h3>
+                            <p class="text-sm text-text-secondary">Sem conexão</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="status-badge status-success">Resolvido</span>
+                        <button class="text-secondary-400 hover:text-secondary-600 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
+                    <div>
+                        <span class="text-text-secondary">Prioridade:</span>
+                        <p class="font-medium text-error-600">Alta</p>
+                    </div>
+                    <div>
+                        <span class="text-text-secondary">Criado em:</span>
+                        <p class="font-medium text-text-primary">26/08/2025</p>
+                    </div>
+                    <div>
+                        <span class="text-text-secondary">Resolvido em:</span>
+                        <p class="font-medium text-text-primary">27/08/2025 16:45</p>
+                    </div>
+                    <div>
+                        <span class="text-text-secondary">Tempo resolução:</span>
+                        <p class="font-medium text-success-600">1d 4h</p>
+                    </div>
+                </div>
+
+                <div class="mt-3 pt-3 border-t border-secondary-200">
+                    <p class="text-sm text-text-secondary line-clamp-2">
+                        Internet completamente fora do ar desde ontem. Modem sem sinal.
+                    </p>
+                </div>
+
+                <div class="mt-3 flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <!-- Rating -->
+                        <div class="flex items-center space-x-1">
+                            <svg class="w-4 h-4 text-warning-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <span class="text-xs text-text-secondary">5.0</span>
+                        </div>
+                        <span class="text-xs text-success-600 font-medium">Problema resolvido</span>
+                    </div>
+                    <a href="ticket_details.html" class="text-primary hover:text-primary-700 text-sm font-medium transition-colors">
+                        Ver detalhes →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load More Button -->
+        <div class="mt-8 text-center">
+            <button id="loadMoreButton" class="btn-secondary inline-flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                <span>Carregar mais tickets</span>
+            </button>
+        </div>
+
+        <!-- Empty State (Hidden by default) -->
+        <div id="emptyState" class="hidden text-center py-12">
+            <div class="bg-secondary-50 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-12 h-12 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-text-primary mb-2">Nenhum ticket encontrado</h3>
+            <p class="text-text-secondary mb-6">Você ainda não possui tickets ou nenhum ticket corresponde aos filtros aplicados.</p>
+            <a href="create_ticket.html" class="btn-primary inline-flex items-center space-x-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                <span>Criar Primeiro Ticket</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- Pull to Refresh Indicator -->
+    <div id="pullToRefresh" class="hidden fixed top-16 left-1/2 transform -translate-x-1/2 bg-primary text-white px-4 py-2 rounded-lg shadow-elevation-2 z-50">
+        <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            <span>Atualizando tickets...</span>
+        </div>
+    </div>
+
+    <style>
+        .filter-chip {
+            @apply inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-secondary-100 text-secondary-600 hover:bg-secondary-200 transition-colors;
+        }
+        
+        .filter-chip.active {
+            @apply bg-primary text-white hover:bg-primary-700;
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .ticket-card:hover {
+            transform: translateY(-1px);
+        }
+        
+        @media (max-width: 640px) {
+            .ticket-card {
+                @apply p-3;
+            }
+        }
+    </style>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // User dropdown toggle
+        const userMenuButton = document.getElementById('userMenuButton');
+        const userDropdown = document.getElementById('userDropdown');
+        
+        userMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userDropdown.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            userDropdown.classList.add('hidden');
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const clearSearch = document.getElementById('clearSearch');
+        
+        searchInput.addEventListener('input', (e) => {
+            if (e.target.value.length > 0) {
+                clearSearch.classList.remove('hidden');
+            } else {
+                clearSearch.classList.add('hidden');
+            }
+            filterTickets();
+        });
+
+        clearSearch.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearch.classList.add('hidden');
+            filterTickets();
+        });
+
+        // Filter chips functionality
+        const filterChips = document.querySelectorAll('.filter-chip');
+        let activeFilter = 'all';
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                // Remove active class from all chips
+                filterChips.forEach(c => c.classList.remove('active'));
+                // Add active class to clicked chip
+                chip.classList.add('active');
+                activeFilter = chip.dataset.filter;
+                filterTickets();
+            });
+        });
+
+        // Advanced filters
+        const priorityFilter = document.getElementById('priorityFilter');
+        const dateFilter = document.getElementById('dateFilter');
+        const sortFilter = document.getElementById('sortFilter');
+
+        [priorityFilter, dateFilter, sortFilter].forEach(filter => {
+            filter.addEventListener('change', filterTickets);
+        });
+
+        // Filter tickets function
+        function filterTickets() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const tickets = document.querySelectorAll('.ticket-card');
+            let visibleCount = 0;
+
+            tickets.forEach(ticket => {
+                const ticketText = ticket.textContent.toLowerCase();
+                const matchesSearch = ticketText.includes(searchTerm);
+                
+                // Add more filter logic here based on status, priority, etc.
+                let matchesFilter = true;
+                
+                if (activeFilter !== 'all') {
+                    const statusBadge = ticket.querySelector('.status-badge');
+                    const status = statusBadge.textContent.toLowerCase();
+                    
+                    switch(activeFilter) {
+                        case 'open':
+                            matchesFilter = status.includes('aberto');
+                            break;
+                        case 'in-progress':
+                            matchesFilter = status.includes('andamento');
+                            break;
+                        case 'closed':
+                            matchesFilter = status.includes('resolvido');
+                            break;
+                    }
+                }
+
+                if (matchesSearch && matchesFilter) {
+                    ticket.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    ticket.style.display = 'none';
+                }
+            });
+
+            // Update results count
+            document.getElementById('resultsCount').textContent = `${visibleCount} tickets encontrados`;
+            
+            // Show/hide empty state
+            const emptyState = document.getElementById('emptyState');
+            const ticketsList = document.getElementById('ticketsList');
+            
+            if (visibleCount === 0) {
+                ticketsList.style.display = 'none';
+                emptyState.classList.remove('hidden');
+            } else {
+                ticketsList.style.display = 'block';
+                emptyState.classList.add('hidden');
+            }
+        }
+
+        // Load more functionality
+        const loadMoreButton = document.getElementById('loadMoreButton');
+        loadMoreButton.addEventListener('click', () => {
+            // Simulate loading more tickets
+            loadMoreButton.innerHTML = `
+                <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                <span>Carregando...</span>
+            `;
+            
+            setTimeout(() => {
+                loadMoreButton.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    <span>Carregar mais tickets</span>
+                `;
+            }, 1500);
+        });
+
+        // Export functionality
+        const exportButton = document.getElementById('exportButton');
+        exportButton.addEventListener('click', () => {
+            // Simulate PDF export
+            exportButton.textContent = 'Gerando PDF...';
+            setTimeout(() => {
+                exportButton.textContent = 'Exportar PDF';
+                // In a real app, this would trigger a PDF download
+                alert('PDF gerado com sucesso!');
+            }, 2000);
+        });
+
+        // Pull to refresh (mobile)
+        let startY = 0;
+        let pullDistance = 0;
+        const pullThreshold = 100;
+        const pullToRefreshIndicator = document.getElementById('pullToRefresh');
+
+        if ('ontouchstart' in window) {
+            document.addEventListener('touchstart', (e) => {
+                startY = e.touches[0].clientY;
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (window.scrollY === 0) {
+                    pullDistance = e.touches[0].clientY - startY;
+                    if (pullDistance > 0 && pullDistance < pullThreshold) {
+                        e.preventDefault();
+                    }
+                }
+            });
+
+            document.addEventListener('touchend', () => {
+                if (pullDistance > pullThreshold) {
+                    pullToRefreshIndicator.classList.remove('hidden');
+                    setTimeout(() => {
+                        pullToRefreshIndicator.classList.add('hidden');
+                        // Refresh tickets data
+                        filterTickets();
+                    }, 2000);
+                }
+                pullDistance = 0;
+            });
+        }
+
+        // Ticket card click navigation
+        document.querySelectorAll('.ticket-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Don't navigate if clicking on buttons or links
+                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A' || e.target.closest('button') || e.target.closest('a')) {
+                    return;
+                }
+                
+                const ticketId = card.dataset.ticketId;
+                window.location.href = `ticket_details.html?id=${ticketId}`;
+            });
+        });
+
+        // Real-time updates simulation
+        function simulateRealTimeUpdates() {
+            setInterval(() => {
+                // Simulate random ticket status updates
+                const tickets = document.querySelectorAll('.ticket-card');
+                if (tickets.length > 0) {
+                    const randomTicket = tickets[Math.floor(Math.random() * tickets.length)];
+                    const statusBadge = randomTicket.querySelector('.status-badge');
+                    
+                    // Add a subtle animation to indicate update
+                    statusBadge.style.animation = 'pulse 0.5s ease-in-out';
+                    setTimeout(() => {
+                        statusBadge.style.animation = '';
+                    }, 500);
+                }
+            }, 30000); // Update every 30 seconds
+        }
+
+        // Initialize real-time updates
+        simulateRealTimeUpdates();
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check authentication
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = 'user_login.html';
+                return;
+            }
+
+            // Load user data
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                // Update user display name based on email
+                const userName = userEmail === 'cliente@exemplo.com' ? 'João Silva' : 'Admin User';
+                document.querySelector('#userMenuButton span').textContent = userName;
+            }
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

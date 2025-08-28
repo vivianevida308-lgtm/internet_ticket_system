@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Criar Novo Ticket - Sistema de Tickets de Internet</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script type="module" src="../js/api.js"></script>
+    <script type="module" src="../js/auth-service.js"></script>
+    <script type="module" src="../js/ticket-service.js"></script>
+    <script type="module" src="../js/auth.js"></script>
+    <script type="module" src="../js/create-ticket.js"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Header -->
+    <header class="bg-surface shadow-elevation-1 border-b border-secondary-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo and Navigation -->
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-primary text-white rounded-lg p-2">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <h1 class="text-xl font-semibold text-text-primary">Sistema de Tickets</h1>
+                    </div>
+                    
+                    <!-- Desktop Navigation -->
+                    <nav class="hidden md:flex space-x-6">
+                        <a href="customer_dashboard.html" class="text-text-secondary hover:text-primary transition-colors">
+                            Dashboard
+                        </a>
+                        <a href="my_tickets.html" class="text-text-secondary hover:text-primary transition-colors">
+                            Meus Tickets
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notifications -->
+                    <button class="relative p-2 text-text-secondary hover:text-primary transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-6h5v6z"/>
+                        </svg>
+                        <span class="absolute -top-1 -right-1 bg-error text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+
+                    <!-- User Profile -->
+                    <div class="relative">
+                        <button id="userMenuButton" class="flex items-center space-x-2 text-text-secondary hover:text-primary transition-colors">
+                            <img src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&w=100" alt="Perfil do usuário" class="w-8 h-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                            <span id="userEmail" class="hidden sm:block font-medium">João Silva</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-surface rounded-lg shadow-elevation-3 border border-secondary-200 z-50">
+                            <div class="py-1">
+                                <a href="customer_dashboard.html" class="block px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-primary transition-colors">
+                                    Dashboard
+                                </a>
+                                <a href="javascript:void(0)" class="block px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-primary transition-colors">
+                                    Perfil
+                                </a>
+                                <a href="javascript:void(0)" class="block px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-primary transition-colors">
+                                    Configurações
+                                </a>
+                                <hr class="my-1 border-secondary-200" />
+                                <a href="javascript:void(0)" id="logoutBtn" class="block px-4 py-2 text-sm text-error-600 hover:bg-error-50 transition-colors">
+                                    Sair
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="md:hidden p-2 text-text-secondary hover:text-primary transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Overlay -->
+        <div id="mobileNavOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300">
+            <div id="mobileNavPanel" class="fixed inset-y-0 left-0 w-64 bg-surface shadow-elevation-3 transform -translate-x-full transition-transform duration-300 ease-in-out z-50">
+                <div class="p-4 border-b border-secondary-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="bg-primary text-white rounded-lg p-1.5">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                            </div>
+                            <span class="font-semibold text-text-primary">Sistema de Tickets</span>
+                        </div>
+                        <button id="closeMobileNav" class="text-text-secondary hover:text-primary transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <nav class="p-4 space-y-2">
+                    <a href="customer_dashboard.html" class="block py-2 text-text-secondary hover:text-primary transition-colors">
+                        Dashboard
+                    </a>
+                    <a href="my_tickets.html" class="block py-2 text-text-secondary hover:text-primary transition-colors">
+                        Meus Tickets
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center space-x-2 text-sm text-text-secondary mb-6">
+            <a href="customer_dashboard.html" class="hover:text-primary transition-colors">Dashboard</a>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+            <a href="my_tickets.html" class="hover:text-primary transition-colors">Meus Tickets</a>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+            <span class="text-text-primary font-medium">Criar Novo Ticket</span>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-semibold text-text-primary mb-2">Criar Novo Ticket</h1>
+            <p class="text-text-secondary">Preencha o formulário abaixo para criar um novo ticket de suporte</p>
+        </div>
+
+        <!-- Alerts -->
+        <div id="successAlert" class="hidden mb-4 p-4 rounded-lg bg-success-50 text-success-700 border border-success-200">
+            Ticket criado com sucesso!
+        </div>
+        
+        <div id="errorAlert" class="hidden mb-4 p-4 rounded-lg bg-error-50 text-error-700 border border-error-200">
+            Ocorreu um erro ao criar o ticket. Tente novamente.
+        </div>
+
+        <!-- Ticket Form -->
+        <div class="bg-surface rounded-lg shadow-elevation-1 border border-secondary-200 p-6">
+            <form id="ticketForm" class="space-y-6">
+                <!-- User Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="userName" class="block text-sm font-medium text-text-primary mb-1">Nome</label>
+                        <input type="text" id="userName" name="userName" class="input-field" readonly />
+                    </div>
+                    <div>
+                        <label for="userEmail" class="block text-sm font-medium text-text-primary mb-1">Email</label>
+                        <input type="email" id="userEmail" name="userEmail" class="input-field" readonly />
+                    </div>
+                </div>
+
+                <!-- Ticket Details -->
+                <div>
+                    <label for="title" class="block text-sm font-medium text-text-primary mb-1">Título do Ticket <span class="text-error-600">*</span></label>
+                    <input type="text" id="title" name="title" class="input-field" placeholder="Ex: Internet lenta" required />
+                    <p id="titleError" class="hidden mt-1 text-sm text-error-600"></p>
+                </div>
+
+                <div>
+                    <label for="category" class="block text-sm font-medium text-text-primary mb-1">Categoria <span class="text-error-600">*</span></label>
+                    <select id="category" name="category" class="input-field" required>
+                        <option value="">Selecione uma categoria</option>
+                    </select>
+                    <p id="categoryError" class="hidden mt-1 text-sm text-error-600"></p>
+                </div>
+
+                <div>
+                    <label for="priority" class="block text-sm font-medium text-text-primary mb-1">Prioridade</label>
+                    <select id="priority" name="priority" class="input-field">
+                        <option value="baixa">Baixa</option>
+                        <option value="media" selected>Média</option>
+                        <option value="alta">Alta</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="description" class="block text-sm font-medium text-text-primary mb-1">Descrição do Problema <span class="text-error-600">*</span></label>
+                    <textarea id="description" name="description" rows="5" class="input-field" placeholder="Descreva detalhadamente o problema que está enfrentando..." required></textarea>
+                    <div class="flex justify-between mt-1">
+                        <p id="descriptionError" class="hidden text-sm text-error-600"></p>
+                        <p id="charCounter" class="text-sm text-text-secondary">1000 caracteres restantes</p>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex items-center justify-between pt-4 border-t border-secondary-200">
+                    <button id="backButton" type="button" class="btn-secondary">
+                        Voltar
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        Criar Ticket
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <style>
+        .input-field {
+            @apply block w-full rounded-md border-secondary-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 transition-colors;
+        }
+        
+        .btn-primary {
+            @apply inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors;
+        }
+        
+        .btn-secondary {
+            @apply inline-flex items-center px-4 py-2 border border-secondary-300 rounded-md shadow-sm text-sm font-medium text-text-primary bg-white hover:bg-secondary-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500 transition-colors;
+        }
+    </style>
+
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Sistema de Tickets de Internet</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Finternett4536back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.9"></script>
+    <script src="../js/auth.js"></script>
+</head>
+<body class="bg-gradient-to-br from-primary-50 via-background to-accent-50 min-h-screen">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5">
+        <svg class="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#grid)"/>
+        </svg>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative min-h-screen flex items-center justify-center px-4 py-8">
+        <div class="w-full max-w-md">
+            <!-- Header Section -->
+            <div class="text-center mb-8">
+                <!-- Company Logo -->
+                <div class="flex justify-center mb-6">
+                    <div class="bg-primary text-white rounded-xl p-4 shadow-elevation-2">
+                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <h1 class="text-3xl font-semibold text-text-primary mb-2">
+                    Sistema de Tickets
+                </h1>
+                <p class="text-text-secondary text-base">
+                    Acesse sua conta para gerenciar tickets de internet
+                </p>
+            </div>
+
+            <!-- Login Form Card -->
+            <div class="card shadow-elevation-3 border-0">
+                <form id="loginForm" class="space-y-6">
+                    <!-- Email/Username Field -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-text-primary mb-2">
+                            E-mail ou Nome de Usuário
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="email" name="email" class="input-field pl-10 pr-4" placeholder="Digite seu e-mail ou usuário" required />
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="emailError" class="hidden mt-1 text-sm text-error-600"></div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-text-primary mb-2">
+                            Senha
+                        </label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password" class="input-field pl-10 pr-12" placeholder="Digite sua senha" required />
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 pr-3 flex items-center text-secondary-400 hover:text-secondary-600 transition-colors">
+                                <svg id="eyeOpen" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                </svg>
+                                <svg id="eyeClosed" class="h-5 w-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="passwordError" class="hidden mt-1 text-sm text-error-600"></div>
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember" name="remember" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary-500 border-secondary-300 rounded" />
+                            <label for="remember" class="ml-2 block text-sm text-text-secondary">
+                                Lembrar de mim
+                            </label>
+                        </div>
+                        <a href="javascript:void(0)" class="text-sm text-primary hover:text-primary-700 font-medium transition-colors">
+                            Esqueci minha senha
+                        </a>
+                    </div>
+
+                    <!-- Login Button -->
+                    <button type="submit" id="loginButton" class="w-full btn-primary py-3 text-base font-semibold relative overflow-hidden">
+                        <span id="loginText">Entrar</span>
+                        <div id="loginSpinner" class="hidden absolute inset-0 flex items-center justify-center">
+                            <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                            </svg>
+                        </div>
+                    </button>
+
+                    <!-- Role Selection (Hidden - for demo purposes) -->
+                    <div class="hidden">
+                        <select id="userRole" name="role">
+                            <option value="customer">Cliente</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                </form>
+
+                <!-- Divider -->
+                <div class="mt-6 pt-6 border-t border-secondary-200">
+                    <p class="text-center text-sm text-text-secondary">
+                        Não possui uma conta? 
+                        <a href="javascript:void(0)" class="text-primary hover:text-primary-700 font-medium transition-colors">
+                            Criar conta
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Trust Signals -->
+            <div class="mt-8 text-center">
+                <div class="flex justify-center items-center space-x-4 mb-4">
+                    <div class="flex items-center space-x-2 bg-surface px-3 py-2 rounded-lg shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?q=80&w=100&auto=format&fit=crop" alt="Certificação ANATEL" class="w-6 h-6 object-contain" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <span class="text-xs text-text-secondary font-medium">ANATEL</span>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-surface px-3 py-2 rounded-lg shadow-sm">
+                        <svg class="w-5 h-5 text-success-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-xs text-text-secondary font-medium">SSL Seguro</span>
+                    </div>
+                </div>
+                <p class="text-xs text-text-secondary">
+                    Certificado pela ANATEL • Conexão segura SSL • Dados protegidos
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <div class="mt-8 text-center text-xs text-text-secondary">
+                <p>© 2025 Sistema de Tickets de Internet. Todos os direitos reservados.</p>
+                <div class="mt-2 space-x-4">
+                    <a href="javascript:void(0)" class="hover:text-primary transition-colors">Termos de Uso</a>
+                    <a href="javascript:void(0)" class="hover:text-primary transition-colors">Política de Privacidade</a>
+                    <a href="javascript:void(0)" class="hover:text-primary transition-colors">Suporte</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Credentials Modal -->
+    <div id="credentialsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-surface rounded-lg p-6 max-w-md w-full">
+            <h3 class="text-lg font-semibold text-text-primary mb-4">Credenciais de Demonstração</h3>
+            <div class="space-y-3">
+                <div class="bg-secondary-50 p-3 rounded-lg">
+                    <p class="text-sm font-medium text-text-primary">Cliente:</p>
+                    <p class="text-sm text-text-secondary">Email: cliente@exemplo.com</p>
+                    <p class="text-sm text-text-secondary">Senha: cliente123</p>
+                </div>
+                <div class="bg-secondary-50 p-3 rounded-lg">
+                    <p class="text-sm font-medium text-text-primary">Administrador:</p>
+                    <p class="text-sm text-text-secondary">Email: admin@exemplo.com</p>
+                    <p class="text-sm text-text-secondary">Senha: admin123</p>
+                </div>
+                <div class="bg-secondary-50 p-3 rounded-lg">
+                    <p class="text-sm font-medium text-text-primary">Técnico:</p>
+                    <p class="text-sm text-text-secondary">Email: tecnico@exemplo.com</p>
+                    <p class="text-sm text-text-secondary">Senha: tecnico123</p>
+                </div>
+            </div>
+            <button id="closeModal" class="mt-4 w-full btn-primary">
+                Entendi
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Password toggle functionality
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeOpen = document.getElementById('eyeOpen');
+        const eyeClosed = document.getElementById('eyeClosed');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            eyeOpen.classList.toggle('hidden');
+            eyeClosed.classList.toggle('hidden');
+        });
+
+        // Form validation and submission
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const loginText = document.getElementById('loginText');
+        const loginSpinner = document.getElementById('loginSpinner');
+
+        // Demo credentials
+        const demoCredentials = {
+            'cliente@exemplo.com': { password: 'cliente123', role: 'customer', redirect: 'customer_dashboard.html' },
+            'admin@exemplo.com': { password: 'admin123', role: 'admin', redirect: 'admin_dashboard.html' },
+            'tecnico@exemplo.com': { password: 'tecnico123', role: 'technician', redirect: 'technician_dashboard.html' }
+        };
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Clear previous errors
+            clearErrors();
+            
+            // Validate fields
+            if (!email) {
+                showError('emailError', 'Por favor, digite seu e-mail ou usuário.');
+                return;
+            }
+            
+            if (!password) {
+                showError('passwordError', 'Por favor, digite sua senha.');
+                return;
+            }
+            
+            // Show loading state
+            showLoading(true);
+            
+            // Simulate authentication delay
+            setTimeout(() => {
+                const user = demoCredentials[email];
+                
+                if (user && user.password === password) {
+                    // Success - redirect to appropriate dashboard
+                    localStorage.setItem('userRole', user.role);
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('isLoggedIn', 'true');
+                    
+                    window.location.href = user.redirect;
+                } else {
+                    // Error
+                    showError('passwordError', 'E-mail ou senha incorretos. Tente novamente.');
+                    showLoading(false);
+                }
+            }, 1500);
+        });
+
+        function showLoading(show) {
+            if (show) {
+                loginText.classList.add('hidden');
+                loginSpinner.classList.remove('hidden');
+                loginButton.disabled = true;
+            } else {
+                loginText.classList.remove('hidden');
+                loginSpinner.classList.add('hidden');
+                loginButton.disabled = false;
+            }
+        }
+
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.classList.remove('hidden');
+        }
+
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('[id$="Error"]');
+            errorElements.forEach(element => {
+                element.classList.add('hidden');
+                element.textContent = '';
+            });
+        }
+
+        // Show demo credentials modal on page load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('credentialsModal').classList.remove('hidden');
+            }, 1000);
+        });
+
+        // Close modal
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('credentialsModal').classList.add('hidden');
+        });
+
+        // Real-time validation
+        document.getElementById('email').addEventListener('input', function() {
+            if (this.value.trim()) {
+                document.getElementById('emailError').classList.add('hidden');
+            }
+        });
+
+        document.getElementById('password').addEventListener('input', function() {
+            if (this.value) {
+                document.getElementById('passwordError').classList.add('hidden');
+            }
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

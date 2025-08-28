@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciamento de Tickets - Sistema de Tickets de Internet</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Finternett4536back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5">
+        <svg class="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#grid)"/>
+        </svg>
+    </div>
+
+    <div class="relative flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-surface shadow-elevation-3 border-r border-secondary-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
+            <!-- Logo Section -->
+            <div class="flex items-center justify-between h-16 px-6 border-b border-secondary-200">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-primary text-white rounded-lg p-2">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-semibold text-text-primary">Admin Panel</h1>
+                        <p class="text-xs text-text-secondary">Sistema de Tickets</p>
+                    </div>
+                </div>
+                <button id="closeSidebar" class="lg:hidden text-secondary-400 hover:text-secondary-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="mt-6 px-3">
+                <div class="space-y-1">
+                    <!-- Dashboard -->
+                    <a href="admin_dashboard.html" class="flex items-center px-3 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-secondary-100 rounded-lg transition-colors group">
+                        <svg class="w-5 h-5 mr-3 text-secondary-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z"/>
+                        </svg>
+                        Dashboard
+                    </a>
+
+                    <!-- Ticket Management - Active -->
+                    <a href="ticket_management.html" class="flex items-center px-3 py-2 text-sm font-medium text-primary bg-primary-50 rounded-lg">
+                        <svg class="w-5 h-5 mr-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        Gerenciar Tickets
+                        <span class="ml-auto bg-primary text-white text-xs px-2 py-1 rounded-full">12</span>
+                    </a>
+
+                    <!-- Analytics -->
+                    <a href="javascript:void(0)" class="flex items-center px-3 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-secondary-100 rounded-lg transition-colors group">
+                        <svg class="w-5 h-5 mr-3 text-secondary-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Relatórios
+                    </a>
+
+                    <!-- Settings -->
+                    <a href="javascript:void(0)" class="flex items-center px-3 py-2 text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-secondary-100 rounded-lg transition-colors group">
+                        <svg class="w-5 h-5 mr-3 text-secondary-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Configurações
+                    </a>
+                </div>
+
+                <!-- User Section -->
+                <div class="mt-8 pt-6 border-t border-secondary-200">
+                    <div class="flex items-center px-3 py-2">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=100&auto=format&fit=crop" alt="Admin Avatar" class="w-8 h-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                        <div class="ml-3 flex-1">
+                            <p class="text-sm font-medium text-text-primary">Admin</p>
+                            <p class="text-xs text-text-secondary">admin@exemplo.com</p>
+                        </div>
+                    </div>
+                    <a href="user_login.html" class="mt-2 flex items-center px-3 py-2 text-sm font-medium text-text-secondary hover:text-error-600 hover:bg-error-50 rounded-lg transition-colors group">
+                        <svg class="w-5 h-5 mr-3 text-secondary-400 group-hover:text-error-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        Sair
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 lg:ml-64">
+            <!-- Top Header -->
+            <header class="bg-surface shadow-elevation-1 border-b border-secondary-200">
+                <div class="flex items-center justify-between h-16 px-6">
+                    <!-- Mobile Menu Button -->
+                    <button id="openSidebar" class="lg:hidden text-secondary-400 hover:text-secondary-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+
+                    <!-- Breadcrumb -->
+                    <div class="flex items-center space-x-2 text-sm">
+                        <a href="admin_dashboard.html" class="text-text-secondary hover:text-primary transition-colors">Admin</a>
+                        <svg class="w-4 h-4 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                        <span class="text-text-primary font-medium">Gerenciamento de Tickets</span>
+                    </div>
+
+                    <!-- Header Actions -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Notifications -->
+                        <button class="relative text-secondary-400 hover:text-secondary-600 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM10.5 17H2.5a1 1 0 01-1-1V4a1 1 0 011-1h15a1 1 0 011 1v6.5"/>
+                            </svg>
+                            <span class="absolute -top-1 -right-1 bg-error-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                        </button>
+
+                        <!-- Export Button -->
+                        <button id="exportBtn" class="btn-secondary text-sm">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="p-6">
+                <!-- Page Header -->
+                <div class="mb-8">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                        <div>
+                            <h1 class="text-2xl font-semibold text-text-primary mb-2">Gerenciamento de Tickets</h1>
+                            <p class="text-text-secondary">Gerencie e processe tickets de conectividade dos clientes</p>
+                        </div>
+                        <div class="mt-4 lg:mt-0 flex items-center space-x-3">
+                            <div class="flex items-center space-x-2 text-sm text-text-secondary">
+                                <div class="w-2 h-2 bg-success-500 rounded-full animate-pulse"></div>
+                                <span>Atualização automática ativa</span>
+                            </div>
+                            <span class="text-sm text-text-secondary">Última atualização: 28/08/2025 00:31</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters and Search -->
+                <div class="card mb-6">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                        <!-- Search Bar -->
+                        <div class="flex-1 max-w-md">
+                            <div class="relative">
+                                <input type="text" id="searchInput" placeholder="Buscar por ID, cliente ou descrição..." class="input-field pl-10 pr-4" />
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filter Controls -->
+                        <div class="flex flex-wrap items-center gap-3">
+                            <!-- Status Filter -->
+                            <select id="statusFilter" class="input-field text-sm min-w-32">
+                                <option value>Todos os Status</option>
+                                <option value="open">Aberto</option>
+                                <option value="in-progress">Em Andamento</option>
+                                <option value="resolved">Resolvido</option>
+                                <option value="closed">Fechado</option>
+                            </select>
+
+                            <!-- Priority Filter -->
+                            <select id="priorityFilter" class="input-field text-sm min-w-32">
+                                <option value>Todas Prioridades</option>
+                                <option value="low">Baixa</option>
+                                <option value="medium">Média</option>
+                                <option value="high">Alta</option>
+                                <option value="urgent">Urgente</option>
+                            </select>
+
+                            <!-- Agent Filter -->
+                            <select id="agentFilter" class="input-field text-sm min-w-40">
+                                <option value>Todos os Agentes</option>
+                                <option value="carlos">Carlos Silva</option>
+                                <option value="ana">Ana Santos</option>
+                                <option value="pedro">Pedro Costa</option>
+                                <option value="unassigned">Não Atribuído</option>
+                            </select>
+
+                            <!-- Reset Filters -->
+                            <button id="resetFilters" class="btn-secondary text-sm">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                                Limpar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Results Summary -->
+                    <div class="mt-4 pt-4 border-t border-secondary-200 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                        <div class="text-sm text-text-secondary">
+                            Mostrando <span id="resultCount" class="font-medium text-text-primary">12</span> tickets
+                        </div>
+                        <div class="mt-2 sm:mt-0 flex items-center space-x-4">
+                            <!-- Bulk Actions -->
+                            <div id="bulkActions" class="hidden flex items-center space-x-2">
+                                <span class="text-sm text-text-secondary">
+                                    <span id="selectedCount">0</span> selecionados
+                                </span>
+                                <select id="bulkActionSelect" class="input-field text-sm">
+                                    <option value>Ações em lote</option>
+                                    <option value="assign">Atribuir Agente</option>
+                                    <option value="status">Alterar Status</option>
+                                    <option value="priority">Alterar Prioridade</option>
+                                    <option value="escalate">Escalar</option>
+                                </select>
+                                <button id="applyBulkAction" class="btn-primary text-sm">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tickets Table -->
+                <div class="card overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-secondary-50 border-b border-secondary-200">
+                                <tr>
+                                    <th class="px-4 py-3 text-left">
+                                        <input type="checkbox" id="selectAll" class="rounded border-secondary-300 text-primary focus:ring-primary-500" />
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:bg-secondary-100 transition-colors" data-sort="id">
+                                        ID
+                                        <svg class="inline w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/>
+                                        </svg>
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:bg-secondary-100 transition-colors" data-sort="customer">
+                                        Cliente
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                        Problema
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:bg-secondary-100 transition-colors" data-sort="priority">
+                                        Prioridade
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:bg-secondary-100 transition-colors" data-sort="status">
+                                        Status
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                        Agente
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:bg-secondary-100 transition-colors" data-sort="created">
+                                        Criado
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer hover:bg-secondary-100 transition-colors" data-sort="updated">
+                                        Última Atividade
+                                    </th>
+                                    <th class="px-4 py-3 text-center text-xs font-medium text-text-secondary uppercase tracking-wider">
+                                        Ações
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="ticketsTableBody" class="bg-surface divide-y divide-secondary-200">
+                                <!-- Ticket Row 1 -->
+                                <tr class="hover:bg-secondary-50 transition-colors" data-ticket-id="TK-2025-001">
+                                    <td class="px-4 py-4">
+                                        <input type="checkbox" class="ticket-checkbox rounded border-secondary-300 text-primary focus:ring-primary-500" value="TK-2025-001" />
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center">
+                                            <span class="text-sm font-medium text-primary cursor-pointer hover:underline" onclick="viewTicketDetails('TK-2025-001')">TK-2025-001</span>
+                                            <div class="ml-2 w-2 h-2 bg-warning-500 rounded-full animate-pulse" title="Atualizado recentemente"></div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center">
+                                            <img src="https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?q=80&w=100&auto=format&fit=crop" alt="Cliente" class="w-8 h-8 rounded-full object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                            <div>
+                                                <div class="text-sm font-medium text-text-primary">Maria Silva</div>
+                                                <div class="text-sm text-text-secondary">maria.silva@email.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="text-sm text-text-primary">Conexão intermitente</div>
+                                        <div class="text-sm text-text-secondary">Fibra óptica - Residencial</div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="status-badge bg-error-100 text-error-600">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Alta
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="status-badge bg-warning-100 text-warning-600">
+                                            <div class="w-2 h-2 bg-warning-500 rounded-full mr-2"></div>
+                                            Em Andamento
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center">
+                                            <img src="https://images.pixabay.com/photo/2016/11/18/19/07/happy-1836445_960_720.jpg?q=80&w=100&auto=format&fit=crop" alt="Agente" class="w-6 h-6 rounded-full object-cover mr-2" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                            <span class="text-sm text-text-primary">Carlos Silva</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 text-sm text-text-secondary">
+                                        28/08/2025<br />
+                                        <span class="text-xs">09:15</span>
+                                    </td>
+                                    <td class="px-4 py-4 text-sm text-text-secondary">
+                                        28/08/2025<br />
+                                        <span class="text-xs">00:30</span>
+                                    </td>
+                                    <td class="px-4 py-4 text-center">
+                                        <div class="relative inline-block">
+                                            <button class="text-secondary-400 hover:text-secondary-600 transition-colors" onclick="toggleActionMenu('TK-2025-001')">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                                                </svg>
+                                            </button>
+                                            <div id="actionMenu-TK-2025-001" class="hidden absolute right-0 mt-2 w-48 bg-surface rounded-lg shadow-elevation-3 border border-secondary-200 z-10">
+                                                <div class="py-1">
+                                                    <a href="ticket_details.html" class="flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                        </svg>
+                                                        Ver Detalhes
+                                                    </a>
+                                                    <button class="flex items-center w-full px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors" onclick="assignAgent('TK-2025-001')">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                        </svg>
+                                                        Atribuir Agente
+                                                    </button>
+                                                    <button class="flex items-center w-full px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors" onclick="changeStatus('TK-2025-001')">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                        </svg>
+                                                        Alterar Status
+                                                    </button>
+                                                    <button class="flex items-center w-full px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors" onclick="addNote('TK-2025-001')">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                        </svg>
+                                                        Adicionar Nota
+                                                    </button>
+                                                    <div class="border-t border-secondary-200 my-1"></div>
+                                                    <button class="flex items-center w-full px-4 py-2 text-sm text-error-600 hover:bg-error-50 transition-colors" onclick="escalateTicket('TK-2025-001')">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/>
+                                                        </svg>
+                                                        Escalar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Ticket Row 2 -->
+                                <tr class="hover:bg-secondary-50 transition-colors" data-ticket-id="TK-2025-002">
+                                    <td class="px-4 py-4">
+                                        <input type="checkbox" class="ticket-checkbox rounded border-secondary-300 text-primary focus:ring-primary-500" value="TK-2025-002" />
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="text-sm font-medium text-primary cursor-pointer hover:underline" onclick="viewTicketDetails('TK-2025-002')">TK-2025-002</span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center">
+                                            <img src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?q=80&w=100&auto=format&fit=crop" alt="Cliente" class="w-8 h-8 rounded-full object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                            <div>
+                                                <div class="text-sm font-medium text-text-primary">João Santos</div>
+                                                <div class="text-sm text-text-secondary">joao.santos@empresa.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="text-sm text-text-primary">Velocidade baixa</div>
+                                        <div class="text-sm text-text-secondary">Cabo - Empresarial</div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="status-badge bg-warning-100 text-warning-600">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Média
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="status-badge bg-secondary-100 text-secondary-600">
+                                            <div class="w-2 h-2 bg-secondary-500 rounded-full mr-2"></div>
+                                            Aberto
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="text-sm text-text-secondary">Não atribuído</span>
+                                    </td>
+                                    <td class="px-4 py-4 text-sm text-text-secondary">
+                                        27/08/2025<br />
+                                        <span class="text-xs">16:45</span>
+                                    </td>
+                                    <td class="px-4 py-4 text-sm text-text-secondary">
+                                        27/08/2025<br />
+                                        <span class="text-xs">16:45</span>
+                                    </td>
+                                    <td class="px-4 py-4 text-center">
+                                        <div class="relative inline-block">
+                                            <button class="text-secondary-400 hover:text-secondary-600 transition-colors" onclick="toggleActionMenu('TK-2025-002')">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                                                </svg>
+                                            </button>
+                                            <div id="actionMenu-TK-2025-002" class="hidden absolute right-0 mt-2 w-48 bg-surface rounded-lg shadow-elevation-3 border border-secondary-200 z-10">
+                                                <div class="py-1">
+                                                    <a href="ticket_details.html" class="flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                        </svg>
+                                                        Ver Detalhes
+                                                    </a>
+                                                    <button class="flex items-center w-full px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors" onclick="assignAgent('TK-2025-002')">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                                        </svg>
+                                                        Atribuir Agente
+                                                    </button>
+                                                    <button class="flex items-center w-full px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors" onclick="changeStatus('TK-2025-002')">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                        </svg>
+                                                        Alterar Status
+                                                    </button>
+                                                    <button class="flex items-center w-full px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors" onclick="addNote('TK-2025-002')">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                        </svg>
+                                                        Adicionar Nota
+                                                    </button>
+                                                    <div class="border-t border-secondary-200 my-1"></div>
+                                                    <button class="flex items-center w-full px-4 py-2 text-sm text-error-600 hover:bg-error-50 transition-colors" onclick="escalateTicket('TK-2025-002')">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/>
+                                                        </svg>
+                                                        Escalar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Ticket Row 3 -->
+                                <tr class="hover:bg-secondary-50 transition-colors" data-ticket-id="TK-2025-003">
+                                    <td class="px-4 py-4">
+                                        <input type="checkbox" class="ticket-checkbox rounded border-secondary-300 text-primary focus:ring-primary-500" value="TK-2025-003" />
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="text-sm font-medium text-primary cursor-pointer hover:underline" onclick="viewTicketDetails('TK-2025-003')">TK-2025-003</span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center">
+                                            <img src="https://images.pixabay.com/photo/2017/06/26/02/47/man-2442565_960_720.jpg?q=80&w=100&auto=format&fit=crop" alt="Cliente" class="w-8 h-8 rounded-full object-cover mr-3" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                            <div>
+                                                <div class="text-sm font-medium text-text-primary">Pedro Costa</div>
+                                                <div class="text-sm text-text-secondary">pedro.costa@email.com</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="text-sm text-text-primary">Sem conexão</div>
+                                        <div class="text-sm text-text-secondary">Fibra óptica - Residencial</div>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="status-badge bg-error-100 text-error-600">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Urgente
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <span class="status-badge bg-success-100 text-success-600">
+                                            <div class="w-2 h-2 bg-success-500 rounded-full mr-2"></div>
+                                            Resolvido
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4">
+                                        <div class="flex items-center">
+                                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?q=80&w=100&auto=format&fit=crop" alt="Agente" class="w-6 h-6 rounded-full object-cover mr-2" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
+                                            <span class="text-sm text-text-primary">Ana Santos</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 text-sm text-text-secondary">
+                                        26/08/2025<br />
+                                        <span class="text-xs">14:20</span>
+                                    </td>
+                                    <td class="px-4 py-4 text-sm text-text-secondary">
+                                        27/08/2025<br />
+                                        <span class="text-xs">11:30</span>
+                                    </td>
+                                    <td class="px-4 py-4 text-center">
+                                        <div class="relative inline-block">
+                                            <button class="text-secondary-400 hover:text-secondary-600 transition-colors" onclick="toggleActionMenu('TK-2025-003')">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                                                </svg>
+                                            </button>
+                                            <div id="actionMenu-TK-2025-003" class="hidden absolute right-0 mt-2 w-48 bg-surface rounded-lg shadow-elevation-3 border border-secondary-200 z-10">
+                                                <div class="py-1">
+                                                    <a href="ticket_details.html" class="flex items-center px-4 py-2 text-sm text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                        </svg>
+                                                        Ver Detalhes
+                                                    </a>
+                                                    <button class="flex items-center w-full px-4 py-2 text-sm text-success-600 hover:bg-success-50 transition-colors" onclick="closeTicket('TK-2025-003')">
+                                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                        </svg>
+                                                        Fechar Ticket
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="px-6 py-4 border-t border-secondary-200 flex items-center justify-between">
+                        <div class="text-sm text-text-secondary">
+                            Mostrando 1 a 3 de 12 tickets
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button class="px-3 py-1 text-sm border border-secondary-200 rounded-lg text-text-secondary hover:bg-secondary-50 transition-colors" disabled>
+                                Anterior
+                            </button>
+                            <button class="px-3 py-1 text-sm bg-primary text-white rounded-lg">1</button>
+                            <button class="px-3 py-1 text-sm border border-secondary-200 rounded-lg text-text-secondary hover:bg-secondary-50 transition-colors">2</button>
+                            <button class="px-3 py-1 text-sm border border-secondary-200 rounded-lg text-text-secondary hover:bg-secondary-50 transition-colors">3</button>
+                            <button class="px-3 py-1 text-sm border border-secondary-200 rounded-lg text-text-secondary hover:bg-secondary-50 transition-colors">
+                                Próximo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
+
+    <!-- Quick Edit Modal -->
+    <div id="quickEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-surface rounded-lg p-6 max-w-md w-full">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-text-primary">Edição Rápida</h3>
+                <button id="closeQuickEdit" class="text-secondary-400 hover:text-secondary-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="quickEditContent">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const openSidebar = document.getElementById('openSidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        openSidebar.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+
+        // Table functionality
+        const selectAllCheckbox = document.getElementById('selectAll');
+        const ticketCheckboxes = document.querySelectorAll('.ticket-checkbox');
+        const bulkActions = document.getElementById('bulkActions');
+        const selectedCount = document.getElementById('selectedCount');
+
+        // Select all functionality
+        selectAllCheckbox.addEventListener('change', function() {
+            ticketCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            updateBulkActions();
+        });
+
+        // Individual checkbox functionality
+        ticketCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateBulkActions);
+        });
+
+        function updateBulkActions() {
+            const checkedBoxes = document.querySelectorAll('.ticket-checkbox:checked');
+            const count = checkedBoxes.length;
+            
+            selectedCount.textContent = count;
+            
+            if (count > 0) {
+                bulkActions.classList.remove('hidden');
+            } else {
+                bulkActions.classList.add('hidden');
+            }
+            
+            // Update select all checkbox state
+            selectAllCheckbox.indeterminate = count > 0 && count < ticketCheckboxes.length;
+            selectAllCheckbox.checked = count === ticketCheckboxes.length;
+        }
+
+        // Action menu functionality
+        function toggleActionMenu(ticketId) {
+            const menu = document.getElementById(`actionMenu-${ticketId}`);
+            const allMenus = document.querySelectorAll('[id^="actionMenu-"]');
+            
+            // Close all other menus
+            allMenus.forEach(m => {
+                if (m !== menu) {
+                    m.classList.add('hidden');
+                }
+            });
+            
+            // Toggle current menu
+            menu.classList.toggle('hidden');
+        }
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('[onclick*="toggleActionMenu"]') && !e.target.closest('[id^="actionMenu-"]')) {
+                const allMenus = document.querySelectorAll('[id^="actionMenu-"]');
+                allMenus.forEach(menu => menu.classList.add('hidden'));
+            }
+        });
+
+        // Filter functionality
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const priorityFilter = document.getElementById('priorityFilter');
+        const agentFilter = document.getElementById('agentFilter');
+        const resetFilters = document.getElementById('resetFilters');
+
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            // Simulate search functionality
+            console.log('Searching for:', this.value);
+        });
+
+        // Filter change handlers
+        [statusFilter, priorityFilter, agentFilter].forEach(filter => {
+            filter.addEventListener('change', function() {
+                console.log(`${this.id} changed to:`, this.value);
+                // Apply filters here
+            });
+        });
+
+        // Reset filters
+        resetFilters.addEventListener('click', function() {
+            searchInput.value = '';
+            statusFilter.value = '';
+            priorityFilter.value = '';
+            agentFilter.value = '';
+            console.log('Filters reset');
+        });
+
+        // Ticket actions
+        function viewTicketDetails(ticketId) {
+            window.location.href = `ticket_details.html?id=${ticketId}`;
+        }
+
+        function assignAgent(ticketId) {
+            showQuickEdit('assign', ticketId);
+        }
+
+        function changeStatus(ticketId) {
+            showQuickEdit('status', ticketId);
+        }
+
+        function addNote(ticketId) {
+            showQuickEdit('note', ticketId);
+        }
+
+        function escalateTicket(ticketId) {
+            if (confirm(`Tem certeza que deseja escalar o ticket ${ticketId}?`)) {
+                console.log(`Escalating ticket ${ticketId}`);
+                // Implement escalation logic
+            }
+        }
+
+        function closeTicket(ticketId) {
+            if (confirm(`Tem certeza que deseja fechar o ticket ${ticketId}?`)) {
+                console.log(`Closing ticket ${ticketId}`);
+                // Implement close logic
+            }
+        }
+
+        // Quick edit modal
+        const quickEditModal = document.getElementById('quickEditModal');
+        const closeQuickEdit = document.getElementById('closeQuickEdit');
+        const quickEditContent = document.getElementById('quickEditContent');
+
+        function showQuickEdit(type, ticketId) {
+            let content = '';
+            
+            switch(type) {
+                case 'assign':
+                    content = `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-text-primary mb-2">Atribuir a:</label>
+                                <select class="input-field">
+                                    <option value="">Selecionar agente</option>
+                                    <option value="carlos">Carlos Silva</option>
+                                    <option value="ana">Ana Santos</option>
+                                    <option value="pedro">Pedro Costa</option>
+                                </select>
+                            </div>
+                            <div class="flex space-x-3">
+                                <button class="btn-primary flex-1">Atribuir</button>
+                                <button class="btn-secondary flex-1" onclick="closeQuickEditModal()">Cancelar</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'status':
+                    content = `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-text-primary mb-2">Novo status:</label>
+                                <select class="input-field">
+                                    <option value="open">Aberto</option>
+                                    <option value="in-progress">Em Andamento</option>
+                                    <option value="resolved">Resolvido</option>
+                                    <option value="closed">Fechado</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-text-primary mb-2">Comentário (opcional):</label>
+                                <textarea class="input-field" rows="3" placeholder="Adicione um comentário sobre a mudança de status..."></textarea>
+                            </div>
+                            <div class="flex space-x-3">
+                                <button class="btn-primary flex-1">Alterar Status</button>
+                                <button class="btn-secondary flex-1" onclick="closeQuickEditModal()">Cancelar</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'note':
+                    content = `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-text-primary mb-2">Nota interna:</label>
+                                <textarea class="input-field" rows="4" placeholder="Adicione uma nota interna sobre este ticket..."></textarea>
+                            </div>
+                            <div class="flex space-x-3">
+                                <button class="btn-primary flex-1">Adicionar Nota</button>
+                                <button class="btn-secondary flex-1" onclick="closeQuickEditModal()">Cancelar</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            quickEditContent.innerHTML = content;
+            quickEditModal.classList.remove('hidden');
+        }
+
+        function closeQuickEditModal() {
+            quickEditModal.classList.add('hidden');
+        }
+
+        closeQuickEdit.addEventListener('click', closeQuickEditModal);
+
+        // Bulk actions
+        const bulkActionSelect = document.getElementById('bulkActionSelect');
+        const applyBulkAction = document.getElementById('applyBulkAction');
+
+        applyBulkAction.addEventListener('click', function() {
+            const action = bulkActionSelect.value;
+            const selectedTickets = Array.from(document.querySelectorAll('.ticket-checkbox:checked')).map(cb => cb.value);
+            
+            if (!action) {
+                alert('Selecione uma ação para aplicar.');
+                return;
+            }
+            
+            if (selectedTickets.length === 0) {
+                alert('Selecione pelo menos um ticket.');
+                return;
+            }
+            
+            console.log(`Applying ${action} to tickets:`, selectedTickets);
+            // Implement bulk action logic
+        });
+
+        // Export functionality
+        const exportBtn = document.getElementById('exportBtn');
+        exportBtn.addEventListener('click', function() {
+            console.log('Exporting tickets...');
+            // Implement export logic
+        });
+
+        // Auto-refresh functionality
+        setInterval(function() {
+            // Simulate real-time updates
+            console.log('Auto-refreshing ticket data...');
+        }, 30000); // Refresh every 30 seconds
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Ticket Management page loaded');
+            updateBulkActions();
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

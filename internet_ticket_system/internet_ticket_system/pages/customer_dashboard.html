@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard do Cliente - Sistema de Tickets de Internet</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Finternett4536back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+    <script src="../js/auth.js"></script>
+    <script type="module" src="../js/customer-dashboard.js"></script>
+</head>
+<body class="bg-background min-h-screen">
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobileNavOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden lg:hidden">
+        <div class="fixed inset-y-0 left-0 w-64 bg-surface shadow-elevation-3 transform -translate-x-full transition-transform duration-300" id="mobileNavPanel">
+            <div class="flex items-center justify-between p-4 border-b border-secondary-200">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-primary text-white rounded-lg p-2">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <span class="font-semibold text-text-primary">Sistema de Tickets</span>
+                </div>
+                <button id="closeMobileNav" class="text-secondary-400 hover:text-secondary-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <nav class="p-4 space-y-2">
+                <a href="customer_dashboard.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg bg-primary-50 text-primary font-medium">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v0H8v0z"/>
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="my_tickets.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    <span>Meus Tickets</span>
+                </a>
+                <a href="ticket_details.html" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-secondary-50 hover:text-text-primary transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Detalhes do Ticket</span>
+                </a>
+            </nav>
+            <div class="absolute bottom-4 left-4 right-4">
+                <button id="logoutBtn" class="w-full flex items-center justify-center space-x-2 px-4 py-2 text-error-600 hover:bg-error-50 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-30 bg-surface border-b border-secondary-200 shadow-elevation-1">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo and Mobile Menu -->
+                <div class="flex items-center space-x-4">
+                    <button id="mobileMenuBtn" class="lg:hidden text-secondary-600 hover:text-text-primary">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-primary text-white rounded-lg p-2">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <span class="font-semibold text-text-primary hidden sm:block">Sistema de Tickets</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="customer_dashboard.html" class="text-primary font-medium">Dashboard</a>
+                    <a href="my_tickets.html" class="text-text-secondary hover:text-text-primary transition-colors">Meus Tickets</a>
+                    <a href="ticket_details.html" class="text-text-secondary hover:text-text-primary transition-colors">Detalhes</a>
+                </nav>
+
+                <!-- User Menu -->
+                <div class="relative">
+                    <button id="userMenuBtn" class="flex items-center space-x-2 text-text-secondary hover:text-text-primary transition-colors">
+                        <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
+                        <span class="hidden sm:block font-medium" id="userEmail">cliente@exemplo.com</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-surface rounded-lg shadow-elevation-3 border border-secondary-200 hidden">
+                        <div class="py-1">
+                            <div class="px-4 py-2 border-b border-secondary-200">
+                                <p class="text-sm font-medium text-text-primary">Cliente</p>
+                                <p class="text-xs text-text-secondary" id="userEmailDropdown">cliente@exemplo.com</p>
+                            </div>
+                            <button class="w-full text-left px-4 py-2 text-sm text-error-600 hover:bg-error-50 transition-colors" id="logoutBtnDesktop">
+                                Sair
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Welcome Section -->
+        <div class="mb-8">
+            <h1 class="text-2xl sm:text-3xl font-semibold text-text-primary mb-2">
+                Bem-vindo ao Dashboard
+            </h1>
+            <p class="text-text-secondary">
+                Gerencie seus tickets de internet e monitore o status da sua conexão
+            </p>
+        </div>
+
+        <!-- Connection Status Card -->
+        <div class="mb-8">
+            <div class="card">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-text-primary">Status da Conexão</h2>
+                    <button id="refreshConnectionBtn" class="text-secondary-400 hover:text-secondary-600 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="flex items-center space-x-3">
+                        <div id="connectionIndicator" class="w-4 h-4 bg-success-500 rounded-full animate-pulse"></div>
+                        <div>
+                            <p class="text-sm text-text-secondary">Status</p>
+                            <p id="connectionStatus" class="font-medium text-success-600">Conectado</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-sm text-text-secondary">IP Público</p>
+                        <p id="publicIP" class="font-mono text-sm text-text-primary">192.168.1.100</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-text-secondary">Última Verificação</p>
+                        <p id="lastCheck" class="text-sm text-text-primary">28/08/2025 00:30</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mb-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button id="reportIssueBtn" class="card hover:shadow-elevation-2 transition-all duration-200 text-left group">
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-error-100 text-error-600 rounded-lg p-3 group-hover:bg-error-200 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-text-primary">Reportar Problema</h3>
+                            <p class="text-sm text-text-secondary">Criar novo ticket de suporte</p>
+                        </div>
+                    </div>
+                </button>
+                <a href="my_tickets.html" class="card hover:shadow-elevation-2 transition-all duration-200 text-left group">
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-primary-100 text-primary-600 rounded-lg p-3 group-hover:bg-primary-200 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-text-primary">Ver Todos os Tickets</h3>
+                            <p class="text-sm text-text-secondary">Histórico completo de tickets</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Metrics Summary -->
+        <div class="mb-8">
+            <h2 class="text-lg font-semibold text-text-primary mb-4">Resumo de Métricas</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="card text-center">
+                    <div class="text-2xl font-semibold text-primary mb-1" id="totalTickets">12</div>
+                    <p class="text-sm text-text-secondary">Total de Tickets</p>
+                </div>
+                <div class="card text-center">
+                    <div class="text-2xl font-semibold text-warning-600 mb-1" id="openTickets">3</div>
+                    <p class="text-sm text-text-secondary">Tickets Abertos</p>
+                </div>
+                <div class="card text-center">
+                    <div class="text-2xl font-semibold text-success-600 mb-1" id="avgResolution">2.5h</div>
+                    <p class="text-sm text-text-secondary">Tempo Médio de Resolução</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Tickets -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-text-primary">Tickets Recentes</h2>
+                <a href="my_tickets.html" class="text-primary hover:text-primary-700 text-sm font-medium transition-colors">
+                    Ver todos
+                </a>
+            </div>
+
+            <!-- Mobile Card Layout -->
+            <div class="block sm:hidden space-y-4" id="mobileTicketsList">
+                <div class="card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <p class="font-medium text-text-primary">#TK-2025-001</p>
+                            <p class="text-sm text-text-secondary">Conexão Intermitente</p>
+                        </div>
+                        <span class="status-badge status-warning">Em Andamento</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm text-text-secondary">
+                        <span>27/08/2025 14:30</span>
+                        <a href="ticket_details.html" class="text-primary hover:text-primary-700 font-medium">Ver detalhes</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <p class="font-medium text-text-primary">#TK-2025-002</p>
+                            <p class="text-sm text-text-secondary">Velocidade Baixa</p>
+                        </div>
+                        <span class="status-badge status-success">Resolvido</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm text-text-secondary">
+                        <span>26/08/2025 09:15</span>
+                        <a href="ticket_details.html" class="text-primary hover:text-primary-700 font-medium">Ver detalhes</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <p class="font-medium text-text-primary">#TK-2025-003</p>
+                            <p class="text-sm text-text-secondary">Sem Conexão</p>
+                        </div>
+                        <span class="status-badge status-error">Aberto</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm text-text-secondary">
+                        <span>25/08/2025 16:45</span>
+                        <a href="ticket_details.html" class="text-primary hover:text-primary-700 font-medium">Ver detalhes</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop Table Layout -->
+            <div class="hidden sm:block card overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-secondary-50 border-b border-secondary-200">
+                            <tr>
+                                <th class="text-left py-3 px-4 font-medium text-text-primary">Ticket</th>
+                                <th class="text-left py-3 px-4 font-medium text-text-primary">Problema</th>
+                                <th class="text-left py-3 px-4 font-medium text-text-primary">Status</th>
+                                <th class="text-left py-3 px-4 font-medium text-text-primary">Data</th>
+                                <th class="text-left py-3 px-4 font-medium text-text-primary">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-secondary-200">
+                            <tr class="hover:bg-secondary-50 transition-colors">
+                                <td class="py-3 px-4 font-medium text-text-primary">#TK-2025-001</td>
+                                <td class="py-3 px-4 text-text-secondary">Conexão Intermitente</td>
+                                <td class="py-3 px-4">
+                                    <span class="status-badge status-warning">Em Andamento</span>
+                                </td>
+                                <td class="py-3 px-4 text-text-secondary">27/08/2025 14:30</td>
+                                <td class="py-3 px-4">
+                                    <a href="ticket_details.html" class="text-primary hover:text-primary-700 font-medium">Ver detalhes</a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-secondary-50 transition-colors">
+                                <td class="py-3 px-4 font-medium text-text-primary">#TK-2025-002</td>
+                                <td class="py-3 px-4 text-text-secondary">Velocidade Baixa</td>
+                                <td class="py-3 px-4">
+                                    <span class="status-badge status-success">Resolvido</span>
+                                </td>
+                                <td class="py-3 px-4 text-text-secondary">26/08/2025 09:15</td>
+                                <td class="py-3 px-4">
+                                    <a href="ticket_details.html" class="text-primary hover:text-primary-700 font-medium">Ver detalhes</a>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-secondary-50 transition-colors">
+                                <td class="py-3 px-4 font-medium text-text-primary">#TK-2025-003</td>
+                                <td class="py-3 px-4 text-text-secondary">Sem Conexão</td>
+                                <td class="py-3 px-4">
+                                    <span class="status-badge status-error">Aberto</span>
+                                </td>
+                                <td class="py-3 px-4 text-text-secondary">25/08/2025 16:45</td>
+                                <td class="py-3 px-4">
+                                    <a href="ticket_details.html" class="text-primary hover:text-primary-700 font-medium">Ver detalhes</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Report Issue Modal -->
+    <div id="reportIssueModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-surface rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-text-primary">Reportar Problema</h3>
+                <button id="closeReportModal" class="text-secondary-400 hover:text-secondary-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <form id="reportIssueForm" class="space-y-4">
+                <div>
+                    <label for="issueType" class="block text-sm font-medium text-text-primary mb-2">
+                        Tipo do Problema
+                    </label>
+                    <select id="issueType" class="input-field" required>
+                        <option value>Selecione o tipo</option>
+                        <option value="no_connection">Sem Conexão</option>
+                        <option value="slow_speed">Velocidade Baixa</option>
+                        <option value="intermittent">Conexão Intermitente</option>
+                        <option value="other">Outro</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="issueDescription" class="block text-sm font-medium text-text-primary mb-2">
+                        Descrição do Problema
+                    </label>
+                    <textarea id="issueDescription" rows="4" class="input-field resize-none" placeholder="Descreva detalhadamente o problema que você está enfrentando..." required></textarea>
+                </div>
+                <div class="flex space-x-3">
+                    <button type="button" id="cancelReport" class="flex-1 btn-secondary">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 btn-primary">
+                        Criar Ticket
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+        <div class="bg-surface rounded-lg p-6 flex items-center space-x-3">
+            <svg class="animate-spin h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+            </svg>
+            <span class="text-text-primary">Carregando...</span>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Navigation
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileNavPanel = document.getElementById('mobileNavPanel');
+        const closeMobileNav = document.getElementById('closeMobileNav');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileNavOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                mobileNavPanel.classList.remove('-translate-x-full');
+            }, 10);
+        });
+
+        function closeMobileNavigation() {
+            mobileNavPanel.classList.add('-translate-x-full');
+            setTimeout(() => {
+                mobileNavOverlay.classList.add('hidden');
+            }, 300);
+        }
+
+        closeMobileNav.addEventListener('click', closeMobileNavigation);
+        mobileNavOverlay.addEventListener('click', (e) => {
+            if (e.target === mobileNavOverlay) {
+                closeMobileNavigation();
+            }
+        });
+
+        // User Menu Dropdown
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userDropdown = document.getElementById('userDropdown');
+
+        userMenuBtn.addEventListener('click', () => {
+            userDropdown.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!userMenuBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.add('hidden');
+            }
+        });
+
+        // Report Issue Modal
+        const reportIssueBtn = document.getElementById('reportIssueBtn');
+        const reportIssueModal = document.getElementById('reportIssueModal');
+        const closeReportModal = document.getElementById('closeReportModal');
+        const cancelReport = document.getElementById('cancelReport');
+        const reportIssueForm = document.getElementById('reportIssueForm');
+
+        reportIssueBtn.addEventListener('click', () => {
+            reportIssueModal.classList.remove('hidden');
+        });
+
+        function closeReportIssueModal() {
+            reportIssueModal.classList.add('hidden');
+            reportIssueForm.reset();
+        }
+
+        closeReportModal.addEventListener('click', closeReportIssueModal);
+        cancelReport.addEventListener('click', closeReportIssueModal);
+
+        reportIssueModal.addEventListener('click', (e) => {
+            if (e.target === reportIssueModal) {
+                closeReportIssueModal();
+            }
+        });
+
+        // Report Issue Form Submission
+        reportIssueForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const issueType = document.getElementById('issueType').value;
+            const issueDescription = document.getElementById('issueDescription').value;
+            
+            if (!issueType || !issueDescription.trim()) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            showLoading(true);
+            
+            // Simulate ticket creation
+            setTimeout(() => {
+                showLoading(false);
+                closeReportIssueModal();
+                
+                // Show success message
+                alert('Ticket criado com sucesso! Número: #TK-2025-004');
+                
+                // Update metrics
+                updateMetrics();
+            }, 2000);
+        });
+
+        // Connection Status Refresh
+        const refreshConnectionBtn = document.getElementById('refreshConnectionBtn');
+        const connectionIndicator = document.getElementById('connectionIndicator');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const publicIP = document.getElementById('publicIP');
+        const lastCheck = document.getElementById('lastCheck');
+
+        refreshConnectionBtn.addEventListener('click', () => {
+            refreshConnectionStatus();
+        });
+
+        function refreshConnectionStatus() {
+            showLoading(true);
+            
+            // Simulate API call to check connection
+            setTimeout(() => {
+                const now = new Date();
+                const formattedDate = now.toLocaleDateString('pt-BR') + ' ' + 
+                                    now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                
+                lastCheck.textContent = formattedDate;
+                
+                // Simulate random connection status
+                const statuses = [
+                    { status: 'Conectado', color: 'success', ip: '192.168.1.100' },
+                    { status: 'Instável', color: 'warning', ip: '192.168.1.101' },
+                    { status: 'Desconectado', color: 'error', ip: 'N/A' }
+                ];
+                
+                const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+                
+                connectionStatus.textContent = randomStatus.status;
+                connectionStatus.className = `font-medium text-${randomStatus.color}-600`;
+                connectionIndicator.className = `w-4 h-4 bg-${randomStatus.color}-500 rounded-full animate-pulse`;
+                publicIP.textContent = randomStatus.ip;
+                
+                showLoading(false);
+            }, 1500);
+        }
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logoutBtn');
+        const logoutBtnDesktop = document.getElementById('logoutBtnDesktop');
+
+        function logout() {
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'user_login.html';
+        }
+
+        logoutBtn.addEventListener('click', logout);
+        logoutBtnDesktop.addEventListener('click', logout);
+
+        // Loading overlay
+        function showLoading(show) {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (show) {
+                loadingOverlay.classList.remove('hidden');
+            } else {
+                loadingOverlay.classList.add('hidden');
+            }
+        }
+
+        // Update metrics
+        function updateMetrics() {
+            const totalTickets = document.getElementById('totalTickets');
+            const openTickets = document.getElementById('openTickets');
+            const avgResolution = document.getElementById('avgResolution');
+            
+            const currentTotal = parseInt(totalTickets.textContent);
+            const currentOpen = parseInt(openTickets.textContent);
+            
+            totalTickets.textContent = currentTotal + 1;
+            openTickets.textContent = currentOpen + 1;
+        }
+
+        // Initialize dashboard
+        function initializeDashboard() {
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (!isLoggedIn || !userEmail) {
+                window.location.href = 'user_login.html';
+                return;
+            }
+            
+            // Update user email in UI
+            document.getElementById('userEmail').textContent = userEmail;
+            document.getElementById('userEmailDropdown').textContent = userEmail;
+            
+            // Auto-refresh connection status every 5 minutes
+            setInterval(refreshConnectionStatus, 5 * 60 * 1000);
+        }
+
+        // Pull to refresh for mobile
+        let startY = 0;
+        let currentY = 0;
+        let pullDistance = 0;
+        const pullThreshold = 100;
+
+        document.addEventListener('touchstart', (e) => {
+            if (window.scrollY === 0) {
+                startY = e.touches[0].clientY;
+            }
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (window.scrollY === 0 && startY > 0) {
+                currentY = e.touches[0].clientY;
+                pullDistance = currentY - startY;
+                
+                if (pullDistance > 0 && pullDistance < pullThreshold * 2) {
+                    e.preventDefault();
+                    document.body.style.transform = `translateY(${pullDistance * 0.5}px)`;
+                    document.body.style.opacity = 1 - (pullDistance * 0.002);
+                }
+            }
+        });
+
+        document.addEventListener('touchend', () => {
+            if (pullDistance > pullThreshold) {
+                refreshConnectionStatus();
+            }
+            
+            document.body.style.transform = '';
+            document.body.style.opacity = '';
+            startY = 0;
+            currentY = 0;
+            pullDistance = 0;
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeDashboard);
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
